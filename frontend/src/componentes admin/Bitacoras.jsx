@@ -3,7 +3,7 @@ import { Link, } from "react-router-dom"
 import "../css/details.css"
 
 
-export default function Enlaces() {
+export default function Bitacoras() {
     const [isMenuOpen, setIsMenuOpen] = useState(true);
     const [isLinksOpen, setIsLinksOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
