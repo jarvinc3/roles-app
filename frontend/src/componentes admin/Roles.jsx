@@ -41,7 +41,6 @@ export default function Roles({ datos }) {
                                     {el.rol}
                                 </td>
 
-
                             </tr>
                         ))}
                     </tbody>
@@ -62,3 +61,4 @@ export default function Roles({ datos }) {
         </div>
     )
 }
+

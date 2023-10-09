@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, } from "react-router-dom"
 import Nav from "./Nav"
 import "../css/details.css"
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+const endpoint = 'http://127.0.0.1:8000/api/usuarios/';
 
 
 export default function Bitacoras({ datos }) {
@@ -12,28 +15,12 @@ export default function Bitacoras({ datos }) {
             setDataBitacoras(datos);
         }
     }, [datos]);
-    const [isMenuOpen, setIsMenuOpen] = useState(true);
-    const [isLinksOpen, setIsLinksOpen] = useState(false);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(true);
-
-
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-
-    const linksDrawer = () => {
-        setIsLinksOpen(!isLinksOpen);
-    };
-
-    const toggleDrawer = () => {
-        setIsDrawerOpen(!isDrawerOpen);
-    };
 
 
 
     return (
         <div className="px-10 flex flex-col gap-5">
-            <Nav/>
+            <Nav />
 
             <div className="overflow-x-auto shadow-md sm:rounded-lg mt-20">
                 <table className="w-full text-sm text-left text-gray-500 ">
@@ -64,14 +51,15 @@ export default function Bitacoras({ datos }) {
                                 Usuario
                             </th>
                             <th scope="col" className="px-6 py-3">
+                                Rol
+                            </th>
+                            <th scope="col" className="px-6 py-3">
                                 Acciones
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {dataBitacoras.map((el) => (
-
-
                             <tr key={el.idbitacora} className="bg-white border-b hover:bg-gray-50">
                                 <td className="px-6 py-4">
                                     {el.bitacora}
@@ -102,10 +90,12 @@ export default function Bitacoras({ datos }) {
                                     <p className="p-[2px] w-[100px] rounded-lg text-white bg-green-800">Administrador</p>
                                 </td>
                                 <td className="flex items-center px-6 py-4 space-x-3">
-                                    <p className='flex bg-green-600 p-1 gap-4 rounded-md'>
-                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAyklEQVR4nO2UPwrCMBSHM3oAQephXFysOOlFegmnzp7FY+gipGu8ghScPmlJaAnmjzFjPugSXn5f3muIEJkBKuAOtLmzR4ALE23ukzfAArhqwc0u2gNP4uiB7Sxc6vWzlgydVLYgNvwNHL+EGxpXm4aD56uBpa5fAQ8rvAPWqYI6OdwSuMZySg4PCPrZD/WGmzqvIHAIaYVLc1uADfD6V+Aci+7Uvf9HQWfPPLg/RuCjCIKUEWUZUexz7UP5BMNrqUhHAbtwrwUx8QEo8BbR2puCUwAAAABJRU5ErkJggg==" />
-                                        <a href="#" className="font-medium text-white">Edit</a>
-                                    </p>
+                                    <Link to={`/edit bitacoras/${el.idbitacora}`} >
+                                        <p className='flex bg-green-600 p-1 gap-4 rounded-md'>
+                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAyklEQVR4nO2UPwrCMBSHM3oAQephXFysOOlFegmnzp7FY+gipGu8ghScPmlJaAnmjzFjPugSXn5f3muIEJkBKuAOtLmzR4ALE23ukzfAArhqwc0u2gNP4uiB7Sxc6vWzlgydVLYgNvwNHL+EGxpXm4aD56uBpa5fAQ8rvAPWqYI6OdwSuMZySg4PCPrZD/WGmzqvIHAIaYVLc1uADfD6V+Aci+7Uvf9HQWfPPLg/RuCjCIKUEWUZUexz7UP5BMNrqUhHAbtwrwUx8QEo8BbR2puCUwAAAABJRU5ErkJggg==" />
+                                            <a href="" className="font-medium text-white">Edit</a>
+                                        </p>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}
@@ -126,4 +116,152 @@ export default function Bitacoras({ datos }) {
             </Link>
         </div>
     )
+}
+
+
+export const EditBitacora = () => {
+    const [usuario, setUsuario] = useState('');
+    const [clave, setClave] = useState('');
+    const [idrol, setIdrol] = useState(0);
+    const [habilitado, setHabilitado] = useState('');
+    const [fecha, setFecha] = useState('');
+    const [fechacreacion, setFechacreacion] = useState('');
+    const [fechamodificacion, setFechamodificacion] = useState('');
+    const [usuariocreacion, setUsuariocreacion] = useState('');
+    const [usuariomodificacion, setUsuariomodificacion] = useState('');
+    const [idpersona, setIdpersona] = useState('');
+    const [editSuccess, setEditSuccess] = useState(false);
+    const [editError, setEditError] = useState(false);
+    const navigate = useNavigate();
+    const { idusuario } = useParams();
+
+    const update = async (e) => {
+        e.preventDefault();
+
+        try {
+            await axios.put(`${endpoint}${idusuario}`, {
+                idpersona: idpersona,
+                usuario: usuario,
+                clave: clave,
+                habilitado: habilitado,
+                fecha: fecha,
+                idrol: idrol,
+                fechacreacion: fechacreacion,
+                fechamodificacion: fechamodificacion,
+                usuariocreacion: usuariocreacion,
+                usuariomodificacion: usuariomodificacion
+            });
+
+            setEditSuccess(true);
+            setEditError(false);
+
+            navigate("/usuarios");
+        } catch (error) {
+            console.error(error);
+            setEditSuccess(false);
+            setEditError(error.response?.data?.error || 'Error al editar los datos.');
+        }
+    }
+
+
+    useEffect(() => {
+        const getUsuarioById = async () => {
+            const response = await axios.get(`${endpoint}${idusuario}`);
+            setUsuario(response.data.usuario);
+            setClave(response.data.clave);
+            setIdrol(response.data.idrol);
+            setHabilitado(response.data.habilitado);
+            setIdpersona(response.data.idpersona);
+            setFecha(response.data.fecha);
+            setFechamodificacion(response.data.fechamodificacion);
+            setUsuariomodificacion(response.data.usuariomodificacion);
+            setUsuariocreacion(response.data.usuariocreacion);
+            setFechacreacion(response.data.fechacreacion);
+
+        }
+        getUsuarioById();
+    }, [idusuario]);
+
+
+    return (
+        <div className="w-full flex justify-center items-center flex-col gap-10">
+            <Nav />
+
+            <main className="border border-gray-300 rounded-2xl w-[600px]">
+                <div className="flex py-5 justify-between items-center px-8">
+                    <h2 className=" text-2xl font-normal">Edit Bitacoras</h2>
+                    <Link to={"/bitacoras"}>
+                        <button className="flex items-center duration-200 hover:scale-125 active:scale-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" className="stroke-blue-300">
+                                <path strokeLinejoin="round" strokeLinecap="round" strokeWidth="1.5" d="M11 6L5 12M5 12L11 18M5 12H19"></path>
+                            </svg>
+                            Back
+                        </button>
+                    </Link>
+                </div>
+                <hr className="border border-gray-200 w-full" />
+                <form onSubmit={update} className="py-5 px-8">
+                    <div className="w-full flex justify-between">
+                        <section className="flex flex-col justify-center ">
+                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">ID bitacora</label>
+                            <input value={idrol} onChange={(e) => setIdrol(e.target.value)} type="number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"/>
+                        </section>
+
+                        <section className="flex flex-col justify-center ">
+                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">ID usuario</label>
+                            <input value={idusuario}  readOnly  type="number" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"/>
+                        </section>
+                    </div>
+
+                    <section className="flex flex-col justify-center">
+                        <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Bitacora</label>
+                        <input value={usuario} onChange={(e) => setUsuario(e.target.value)} type="text" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                    </section>
+
+                    <div className="w-full flex justify-between">
+                        <section className="flex flex-col justify-center">
+                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Fecha</label>
+                            <input value={clave} onChange={(e) => setClave(e.target.value)} type="date" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                        </section>
+
+                        <section className="flex flex-col justify-center">
+                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Hora</label>
+                            <input value={habilitado} onChange={(e) => setHabilitado(e.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"/>
+                        </section>
+                    </div>
+
+                    <div className="w-full flex justify-between">
+                        <section className="flex flex-col justify-center">
+                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">IP</label>
+                            <input value={fecha} onChange={(e) => setFecha(e.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"/>
+                        </section>
+
+                        <section className="flex flex-col justify-center">
+                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">SO</label>
+                            <input value={fechacreacion} onChange={(e) => setFechacreacion(e.target.value)} type="text"  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                        </section>
+                    </div>
+
+                    <section className="flex flex-col justify-center">
+                        <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Navegador</label>
+                        <input value={usuariocreacion} onChange={(e) => setUsuariocreacion(e.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                    </section>
+
+                    <section className="flex flex-col justify-center">
+                        <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Usuario</label>
+                        <input value={usuariomodificacion} onChange={(e) => setUsuariomodificacion(e.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"/>
+                    </section>
+
+                    <button className="bg-blue-500 hover:bg-blue-600 py-2 px-5 rounded-md text-white my-5" type="submit">Save</button>
+                </form>
+                {editSuccess && (
+                    <div className="alert alert-success">Datos editados con éxito.</div>
+                )}
+                {editError && (
+                    <div className="alert alert-error">Error al editar los datos.</div>
+                )}
+            </main>
+        </div>
+    )
+
 }
