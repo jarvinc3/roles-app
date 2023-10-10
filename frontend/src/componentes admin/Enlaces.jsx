@@ -7,14 +7,35 @@ import { useNavigate, useParams } from "react-router-dom";
 const endpoint = 'http://127.0.0.1:8000/api/enlaces/';
 
 
-export default function Enlaces({ datos }) {
+export default function Enlaces() {
+    
+
     const [dataEnlaces, setDataEnlaces] = useState([]);
 
     useEffect(() => {
-        if (datos && datos.length > 0) {
-            setDataEnlaces(datos);
+        getAllEnlaces();
+    }, []);
+
+    const getAllEnlaces = async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/enlaces`);
+            setDataEnlaces(response.data); // Actualiza el estado con los datos de la respuesta
+        } catch (error) {
+            console.error('Error al obtener usuarios:', error);
         }
-    }, [datos]);
+    };
+
+    const deleteEnlaces = async (idenlace) => {
+        try {
+            await axios.delete(`http://127.0.0.1:8000/api/enlaces/${idenlace}`);
+            // Si la eliminación fue exitosa, actualiza la lista de usuarios
+            getAllEnlaces();
+        } catch (error) {
+            console.error('Error al eliminar el usuario:', error);
+
+
+        }
+    };
 
 
     return (
@@ -64,9 +85,12 @@ export default function Enlaces({ datos }) {
                                     <Link to={`/edit enlace/${el.idenlace}`}>
                                         <p className='flex bg-green-600 p-1 gap-4 rounded-md'>
                                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAyklEQVR4nO2UPwrCMBSHM3oAQephXFysOOlFegmnzp7FY+gipGu8ghScPmlJaAnmjzFjPugSXn5f3muIEJkBKuAOtLmzR4ALE23ukzfAArhqwc0u2gNP4uiB7Sxc6vWzlgydVLYgNvwNHL+EGxpXm4aD56uBpa5fAQ8rvAPWqYI6OdwSuMZySg4PCPrZD/WGmzqvIHAIaYVLc1uADfD6V+Aci+7Uvf9HQWfPPLg/RuCjCIKUEWUZUexz7UP5BMNrqUhHAbtwrwUx8QEo8BbR2puCUwAAAABJRU5ErkJggg==" />
-                                            <a href="#" className="font-medium text-white">Edit</a>
+                                            <a href="#" className="font-medium text-white"></a>
                                         </p>
                                     </Link>
+                                    <p className='flex bg-red-600 p-1 gap-4 rounded-md'>
+                                        <button onClick={() => deleteEnlaces(el.idenlace)} className="font-medium text-white">Eliminar</button>
+                                    </p>
                                 </td>
                             </tr>
                         ))}
@@ -228,12 +252,10 @@ export const CreateEnlace = () => {
     const [usuariocreacion, setUsuariocreacion] = useState('');
     const [usuariomodificacion, setUsuariomodificacion] = useState('');
     const navigate = useNavigate();
-    const { idenlace } = useParams();
     const createEnlace = async (e) => {
         e.preventDefault();
 
-        await axios.put(`${endpoint}${idenlace}`, {
-            idenlace: idenlace,
+        await axios.post(`http://127.0.0.1:8000/api/enlaces`, {
             idpagina: idpagina,
             idrol: idrol,
             descripcion: descripcion,
@@ -242,7 +264,7 @@ export const CreateEnlace = () => {
             usuariocreacion: usuariocreacion,
             usuariomodificacion: usuariomodificacion
         });
-        navigate("/roles")
+        navigate("/enlaces")
     }
 
     return (
@@ -306,7 +328,7 @@ export const CreateEnlace = () => {
                         </section>
                     </div>
 
-                    <button className="mt-5 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition-all duration-500 ease-in-out hover:scale-110 hover:brightness-110 hover:animate-pulse active:animate-bounce">Create</button>
+                    <button type='submit' className="mt-5 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition-all duration-500 ease-in-out hover:scale-110 hover:brightness-110 hover:animate-pulse active:animate-bounce">Create</button>
 
                 </form>
             </main>

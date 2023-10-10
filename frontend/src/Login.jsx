@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
 
+
 export default function Login() {
     const [usuario, setUsuario] = useState('');
     const [clave, setClave] = useState('');
@@ -18,49 +19,42 @@ export default function Login() {
         try {
             await schema.validate({ usuario, clave }, { abortEarly: false });
             setErrors({});
-
-            // Realizar una solicitud GET para obtener la lista de usuarios desde la API
+        
             const response = await axios.get('http://127.0.0.1:8000/api/usuarios');
-
+        
             if (response.status === 200) {
                 const usuarios = response.data;
-
-                // Verificar si los datos coinciden con algún usuario en la lista
+        
                 const usuarioEncontrado = usuarios.find(
                     (user) => user.usuario === usuario && user.clave === clave
                 );
-
+        
                 if (usuarioEncontrado) {
-                    // Verificar si el idrol es igual a 1
-                    if (usuarioEncontrado.idrol === 1) {
-                        // Redireccionar a la vista de /usuarios
-                        window.location.href = '/usuarios';
-                    } else {
-                        // Redireccionar a la vista de /dashboard
-                        window.location.href = '/dashboard';
-                    }
+                   
+                if (usuarioEncontrado.idrol === 1) {
+                    window.location.href = '/parametros';
                 } else {
-                    // Mostrar un mensaje de error si no se encontró un usuario coincidente
-                    alert('Usuario o clave incorrectos');
-                    setErrors({ login: 'Usuario o clave incorrectos' });
+                    window.location.href = '/dashboard';
                 }
+            } else {
+                alert('Error al obtener la lista de usuarios');
             }
+        }
         } catch (err) {
             if (err instanceof Yup.ValidationError) {
                 const errorMessages = {};
-
+        
                 err.inner.forEach((error) => {
                     errorMessages[error.path] = error.message;
                 });
-
+        
                 setErrors(errorMessages);
             } else {
-                // Manejar otros tipos de errores, como errores de red, etc.
                 console.log(err);
+                alert(err)
             }
         }
-    };
-
+    }
 
     return (
         <div className="h-screen flex flex-col items-center justify-center">

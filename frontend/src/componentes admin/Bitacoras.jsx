@@ -7,15 +7,34 @@ import { useNavigate, useParams } from "react-router-dom";
 const endpoint = 'http://127.0.0.1:8000/api/bitacoras/';
 
 
-export default function Bitacoras({ datos }) {
+export default function Bitacoras() {
+
     const [dataBitacoras, setDataBitacoras] = useState([]);
 
     useEffect(() => {
-        if (datos && datos.length > 0) {
-            setDataBitacoras(datos);
-        }
-    }, [datos]);
+        getAllBitacoras();
+    }, []);
 
+    const getAllBitacoras = async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/bitacoras`);
+            setDataBitacoras(response.data); // Actualiza el estado con los datos de la respuesta
+        } catch (error) {
+            console.error('Error al obtener usuarios:', error);
+        }
+    };
+
+    const deleteBitacoras = async (idbitacora) => {
+        try {
+            await axios.delete(`http://127.0.0.1:8000/api/bitacoras/${idbitacora}`);
+            // Si la eliminación fue exitosa, actualiza la lista de usuarios
+            getAllBitacoras();
+        } catch (error) {
+            console.error('Error al eliminar el usuario:', error);
+
+
+        }
+    };
 
 
     return (
@@ -93,9 +112,12 @@ export default function Bitacoras({ datos }) {
                                     <Link to={`/edit bitacoras/${el.idbitacora}`} >
                                         <p className='flex bg-green-600 p-1 gap-4 rounded-md'>
                                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAyklEQVR4nO2UPwrCMBSHM3oAQephXFysOOlFegmnzp7FY+gipGu8ghScPmlJaAnmjzFjPugSXn5f3muIEJkBKuAOtLmzR4ALE23ukzfAArhqwc0u2gNP4uiB7Sxc6vWzlgydVLYgNvwNHL+EGxpXm4aD56uBpa5fAQ8rvAPWqYI6OdwSuMZySg4PCPrZD/WGmzqvIHAIaYVLc1uADfD6V+Aci+7Uvf9HQWfPPLg/RuCjCIKUEWUZUexz7UP5BMNrqUhHAbtwrwUx8QEo8BbR2puCUwAAAABJRU5ErkJggg==" />
-                                            <a href="" className="font-medium text-white">Edit</a>
+                                            <a href="" className="font-medium text-white"></a>
                                         </p>
                                     </Link>
+                                    <p className='flex bg-red-600 p-1 gap-4 rounded-md'>
+                                        <button onClick={() => deleteBitacoras(el.idbitacora)} className="font-medium text-white">Eliminar</button>
+                                    </p>
                                 </td>
                             </tr>
                         ))}
@@ -270,10 +292,9 @@ export const CreateUBitacora = () => {
     const [navegador, setNavegador] = useState('');
     const [fecha, setFecha] = useState('');
     const navigate = useNavigate();
-    const { idbitacora } = useParams();
     const createBitacora = async (e) => {
         e.preventDefault();
-        await axios.put(`http://127.0.0.1:8000/api/bitacoras/${idbitacora}`, {
+        await axios.post(`http://127.0.0.1:8000/api/bitacoras`, {
             bitacora: bitacora,
             idusuario: idusuario,
             fecha: fecha,
@@ -305,17 +326,13 @@ export const CreateUBitacora = () => {
                 </div>
                 <hr className="border border-gray-200 w-full" />
                 <form onSubmit={createBitacora} className="py-5 px-8">
-                    <div className="w-full flex justify-between">
-                        <section className="flex flex-col justify-center ">
-                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">ID bitacora</label>
-                            <input readOnly type="number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
-                        </section>
-
+                   
+                        
                         <section className="flex flex-col justify-center ">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">ID usuario</label>
                             <input onChange={(e) => setIdusuario(e.target.value)} type="number" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                         </section>
-                    </div>
+                    
 
                     <section className="flex flex-col justify-center">
                         <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Bitacora</label>

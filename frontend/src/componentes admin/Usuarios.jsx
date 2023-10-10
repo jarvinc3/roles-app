@@ -82,7 +82,7 @@ export default function Usuarios() {
                                 </td>
 
                                 <td className="px-6 py-4">
-                                    <p className="p-[2px] w-[100px] rounded-lg text-white bg-green-800">Administrador</p>
+                                    <p className="p-[2px] w-[100px] rounded-lg text-white bg-green-800">Usuarios</p>
                                 </td>
                                 <td className="flex items-center px-6 py-4 space-x-3">
                                     <Link to={`/edit/${el.idusuario}`} className="no-underline"> <p className='flex bg-green-600 p-1 gap-4 rounded-md'>
@@ -156,6 +156,7 @@ export const EditUsuario = () => {
             navigate("/usuarios");
         } catch (error) {
             console.error(error);
+            alert(error)
             setEditSuccess(false);
             setEditError(error.response?.data?.error || 'Error al editar los datos.');
         }
