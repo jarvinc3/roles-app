@@ -18,7 +18,7 @@ export default function Usuarios() {
     const getAllUsuarios = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/api/usuarios`);
-            setUsuarios(response.data); // Actualiza el estado con los datos de la respuesta
+            setUsuarios(response.data);
         } catch (error) {
             console.error('Error al obtener usuarios:', error);
         }
@@ -27,7 +27,6 @@ export default function Usuarios() {
     const deleteUsuario = async (idusuario) => {
         try {
             await axios.delete(`http://127.0.0.1:8000/api/usuarios/${idusuario}`);
-            // Si la eliminación fue exitosa, actualiza la lista de usuarios
             getAllUsuarios();
         } catch (error) {
             console.error('Error al eliminar el usuario:', error);
@@ -376,7 +375,7 @@ export function CreateUsuario() {
                 </div>
                 <hr className="border border-gray-200 w-full" />
                 <form onSubmit={create} className="py-5 px-8">
-                    
+
                     <div className="w-full flex justify-between">
                         <section className="flex flex-col justify-center ">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">ID rol</label>

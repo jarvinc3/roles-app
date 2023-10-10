@@ -10,28 +10,26 @@ const endpoint = 'http://127.0.0.1:8000/api/roles';
 export default function Roles() {
     const [dataRoles, setDataRoles] = useState([]);
 
-useEffect(() => {
-    getAllRoles();
-}, []);
+    useEffect(() => {
+        getAllRoles();
+    }, []);
 
-const getAllRoles = async () => {
-    try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/roles`);
-        
-        // Filtrar los datos para excluir aquellos con idrol = 1
-        const rolesFiltrados = response.data.filter(rol => rol.idrol !== 1);
+    const getAllRoles = async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/roles`);
 
-        setDataRoles(rolesFiltrados); 
-    } catch (error) {
-        console.error('Error al obtener roles:', error);
-    }
-};
+            const rolesFiltrados = response.data.filter(rol => rol.idrol !== 1);
+
+            setDataRoles(rolesFiltrados);
+        } catch (error) {
+            console.error('Error al obtener roles:', error);
+        }
+    };
 
 
     const deleteRoles = async (idrol) => {
         try {
             await axios.delete(`http://127.0.0.1:8000/api/roles/${idrol}`);
-            // Si la eliminación fue exitosa, actualiza la lista de usuarios
             getAllRoles();
         } catch (error) {
             console.error('Error al eliminar el usuario:', error);
@@ -126,7 +124,7 @@ export const EditRoles = () => {
                 fechamodificacion: fechamodificacion,
                 usuariocreacion: usuariocreacion,
                 usuariomodificacion: usuariomodificacion
-                
+
             });
 
             setEditSuccess(true);
@@ -224,7 +222,7 @@ export const EditRoles = () => {
 export const CreateRoles = () => {
 
 
-   
+
     const [rol, setRol] = useState('');
     const [fechacreacion, setFechacreacion] = useState('');
     const [fechamodificacion, setFechamodificacion] = useState('');
@@ -264,7 +262,7 @@ export const CreateRoles = () => {
                 <form onSubmit={createRol} className="py-5 px-8">
 
                     <div className="w-full flex justify-between">
-                       
+
 
                         <section className="flex flex-col justify-center ">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Rol</label>

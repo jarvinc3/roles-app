@@ -16,7 +16,7 @@ export default function Parametros() {
 
     return (
         <div className="px-10 flex flex-col gap-5">
-            <Nav/>
+            <Nav />
 
             <div className="overflow-x-auto shadow-md sm:rounded-lg mt-20">
                 <table className="w-full text-sm text-left text-gray-500 ">

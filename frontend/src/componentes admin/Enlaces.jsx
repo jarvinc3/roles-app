@@ -8,7 +8,7 @@ const endpoint = 'http://127.0.0.1:8000/api/enlaces/';
 
 
 export default function Enlaces() {
-    
+
 
     const [dataEnlaces, setDataEnlaces] = useState([]);
 
@@ -19,7 +19,7 @@ export default function Enlaces() {
     const getAllEnlaces = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/api/enlaces`);
-            setDataEnlaces(response.data); // Actualiza el estado con los datos de la respuesta
+            setDataEnlaces(response.data); 
         } catch (error) {
             console.error('Error al obtener usuarios:', error);
         }
@@ -28,7 +28,6 @@ export default function Enlaces() {
     const deleteEnlaces = async (idenlace) => {
         try {
             await axios.delete(`http://127.0.0.1:8000/api/enlaces/${idenlace}`);
-            // Si la eliminación fue exitosa, actualiza la lista de usuarios
             getAllEnlaces();
         } catch (error) {
             console.error('Error al eliminar el usuario:', error);
