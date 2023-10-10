@@ -7,13 +7,13 @@ import Enlaces, { CreateEnlace, EditEnlace } from "./componentes admin/Enlaces"
 import Usuarios from "./componentes admin/Usuarios"
 import Roles, { CreateRoles } from "./componentes admin/Roles"
 import Bitacoras, { CreateUBitacora, EditBitacora } from "./componentes admin/Bitacoras"
-import { EditUsuario, CreateUsuario  } from "./componentes admin/Usuarios"
+import { EditUsuario, CreateUsuario } from "./componentes admin/Usuarios"
 import Parametros from "./componentes admin/Parametros"
 
 
 
 function App() {
-  const [datos, setDatos] = useState();
+    const [datos, setDatos] = useState();
     useEffect(() => {
         const promesa = fetch("http://127.0.0.1:8000/api/usuarios")
         Promise.all([promesa]).then(async (values) => {
@@ -65,27 +65,27 @@ function App() {
         })
     }, []);
 
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/dashboard edit" element={<Edit />} />
-        <Route path="/enlaces" element={<Enlaces datos={datosEnlaces}/>} />
-        <Route path="/parametros" element={<Parametros />} />
-        <Route path="/usuarios" element={<Usuarios datos = {datos}/>} />
-        <Route path="/roles" element={<Roles datos = {datosRoles}/>} />
-        <Route path="/bitacoras" element={<Bitacoras datos = {datosBitacoras}/>} />
-        <Route path="/edit/:idusuario" element={<EditUsuario/>} />
-        <Route path="/edit bitacoras/:idbitacora" element={<EditBitacora />} />
-        <Route path="/edit enlace/:idenlace" element={<EditEnlace />} />
-        <Route path="/create usuario" element={<CreateUsuario />} />
-        <Route path="/create roles" element={<CreateRoles />} />
-        <Route path="/create enlace" element={<CreateEnlace />} />
-        <Route path="/create bitacora" element={<CreateUBitacora />} />
-      </Routes>
-    </BrowserRouter>
-  )
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard edit" element={<Edit />} />
+                <Route path="/enlaces" element={<Enlaces datos={datosEnlaces} />} />
+                <Route path="/parametros" element={<Parametros />} />
+                <Route path="/usuarios" element={<Usuarios datos={datos} />} />
+                <Route path="/roles" element={<Roles datos={datosRoles} />} />
+                <Route path="/bitacoras" element={<Bitacoras datos={datosBitacoras} />} />
+                <Route path="/edit/:idusuario" element={<EditUsuario />} />
+                <Route path="/edit bitacoras/:idbitacora" element={<EditBitacora />} />
+                <Route path="/edit enlace/:idenlace" element={<EditEnlace />} />
+                <Route path="/create usuario" element={<CreateUsuario />} />
+                <Route path="/create roles" element={<CreateRoles />} />
+                <Route path="/create enlace" element={<CreateEnlace />} />
+                <Route path="/create bitacora" element={<CreateUBitacora />} />
+            </Routes>
+        </BrowserRouter>
+    )
 }
 
 export default App

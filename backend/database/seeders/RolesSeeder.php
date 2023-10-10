@@ -14,9 +14,9 @@ class RolesSeeder extends Seeder
     public function run()
     {
         // Usar el factory para crear un registro "admin"
-        Roles::factory()->create(['rol' => 'admin']);
+        Roles::factory(5)->create(['rol' => 'admin']);
 
         // Usar el factory para crear un registro "usuario"
-        Roles::factory()->create(['rol' => 'usuario']);
+        Roles::factory(5)->create(['rol' => 'usuario']);
     }
 }

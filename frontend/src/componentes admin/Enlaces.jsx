@@ -220,6 +220,30 @@ export const EditEnlace = () => {
 
 export const CreateEnlace = () => {
 
+    const [idpagina, setIdpagina] = useState('');
+    const [idrol, setIdrol] = useState(0);
+    const [descripcion, setDescripcion] = useState('');
+    const [fechacreacion, setFechacreacion] = useState('');
+    const [fechamodificacion, setFechamodificacion] = useState('');
+    const [usuariocreacion, setUsuariocreacion] = useState('');
+    const [usuariomodificacion, setUsuariomodificacion] = useState('');
+    const navigate = useNavigate();
+    const { idenlace } = useParams();
+    const createEnlace = async (e) => {
+        e.preventDefault();
+
+        await axios.put(`${endpoint}${idenlace}`, {
+            idenlace: idenlace,
+            idpagina: idpagina,
+            idrol: idrol,
+            descripcion: descripcion,
+            fechacreacion: fechacreacion,
+            fechamodificacion: fechamodificacion,
+            usuariocreacion: usuariocreacion,
+            usuariomodificacion: usuariomodificacion
+        });
+        navigate("/roles")
+    }
 
     return (
         <div className="px-10 flex flex-col items-center gap-10 pb-10">
@@ -238,25 +262,49 @@ export const CreateEnlace = () => {
                     </Link>
                 </div>
                 <hr className="border border-gray-200 w-full" />
-                <form className="py-5 px-8">
+                <form onSubmit={createEnlace} className="py-5 px-8">
                     <div className="w-full flex justify-between">
                         <section className="flex flex-col justify-center ">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">ID pagina</label>
-                            <input type="number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"/>
+                            <input onChange={(e) => setIdpagina(e.target.value)} type="number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
 
                         </section>
 
                         <section className="flex flex-col justify-center ">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">ID rol</label>
-                            <input type="number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"/>
+                            <input onChange={(e) => setIdrol(e.target.value)} type="number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                         </section>
 
                     </div>
 
                     <section className="flex flex-col justify-center">
                         <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Descripcion</label>
-                        <input type="text" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                        <input onChange={(e) => setDescripcion(e.target.value)} type="text" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                     </section>
+
+                    <div className="w-full flex justify-between">
+                        <section className="flex flex-col justify-center">
+                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Fecha creacion</label>
+                            <input onChange={(e) => setFechacreacion(e.target.value)} type="date" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                        </section>
+
+                        <section className="flex flex-col justify-center">
+                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">fecha modificacion</label>
+                            <input onChange={(e) => setFechamodificacion(e.target.value)} type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                        </section>
+                    </div>
+
+                    <div className="w-full flex justify-between">
+                        <section className="flex flex-col justify-center">
+                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Usuario creacion</label>
+                            <input onChange={(e) => setUsuariocreacion(e.target.value)} type="text" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                        </section>
+
+                        <section className="flex flex-col justify-center">
+                            <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Usuario modificacion</label>
+                            <input onChange={(e) => setUsuariomodificacion(e.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                        </section>
+                    </div>
 
                     <button className="mt-5 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition-all duration-500 ease-in-out hover:scale-110 hover:brightness-110 hover:animate-pulse active:animate-bounce">Create</button>
 
@@ -265,3 +313,4 @@ export const CreateEnlace = () => {
         </div>
     )
 }
+

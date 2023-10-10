@@ -4,7 +4,7 @@ import Nav from "./Nav"
 import "../css/details.css"
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-const endpoint = 'http://127.0.0.1:8000/api/usuarios/';
+const endpoint = 'http://127.0.0.1:8000/api/bitacoras/';
 
 
 export default function Bitacoras({ datos }) {
@@ -138,7 +138,7 @@ export const EditBitacora = () => {
 
         try {
             await axios.put(`http://127.0.0.1:8000/api/bitacoras/${idbitacora}`, {
-                
+
                 bitacora: bitacora,
                 idusuario: idusuario,
                 fecha: fecha,
@@ -147,7 +147,7 @@ export const EditBitacora = () => {
                 so: so,
                 navegador: navegador,
                 usuario: usuario
-                
+
             });
 
             setEditSuccess(true);
@@ -172,7 +172,7 @@ export const EditBitacora = () => {
             setIp(response.data.ip);
             setSo(response.data.so);
             setNavegador(response.data.navegador);
-            setFecha(response.data.fecha); 
+            setFecha(response.data.fecha);
 
         }
         getUsuarioById();
@@ -261,6 +261,31 @@ export const EditBitacora = () => {
 
 export const CreateUBitacora = () => {
 
+    const [usuario, setUsuario] = useState('');
+    const [bitacora, setBitacora] = useState('');
+    const [idusuario, setIdusuario] = useState(0);
+    const [hora, setHora] = useState('');
+    const [ip, setIp] = useState('');
+    const [so, setSo] = useState('');
+    const [navegador, setNavegador] = useState('');
+    const [fecha, setFecha] = useState('');
+    const navigate = useNavigate();
+    const { idbitacora } = useParams();
+    const createBitacora = async (e) => {
+        e.preventDefault();
+        await axios.put(`http://127.0.0.1:8000/api/bitacoras/${idbitacora}`, {
+            bitacora: bitacora,
+            idusuario: idusuario,
+            fecha: fecha,
+            hora: hora,
+            ip: ip,
+            so: so,
+            navegador: navegador,
+            usuario: usuario
+
+        });
+        navigate("/bitacoras");
+    }
 
     return (
         <div className="px-10 flex flex-col items-center gap-10 pb-10">
@@ -279,56 +304,56 @@ export const CreateUBitacora = () => {
                     </Link>
                 </div>
                 <hr className="border border-gray-200 w-full" />
-                <form className="py-5 px-8">
+                <form onSubmit={createBitacora} className="py-5 px-8">
                     <div className="w-full flex justify-between">
                         <section className="flex flex-col justify-center ">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">ID bitacora</label>
-                            <input type="number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                            <input readOnly type="number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                         </section>
 
                         <section className="flex flex-col justify-center ">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">ID usuario</label>
-                            <input readOnly type="number" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                            <input onChange={(e) => setIdusuario(e.target.value)} type="number" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                         </section>
                     </div>
 
                     <section className="flex flex-col justify-center">
                         <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Bitacora</label>
-                        <input  type="text" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                        <input onChange={(e) => setBitacora(e.target.value)} type="text" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                     </section>
 
                     <div className="w-full flex justify-between">
                         <section className="flex flex-col justify-center">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Fecha</label>
-                            <input type="date" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                            <input onChange={(e) => setFecha(e.target.value)} type="date" placeholder="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                         </section>
 
                         <section className="flex flex-col justify-center">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Hora</label>
-                            <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                            <input onChange={(e) => setHora(e.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                         </section>
                     </div>
 
                     <div className="w-full flex justify-between">
                         <section className="flex flex-col justify-center">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">IP</label>
-                            <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                            <input onChange={(e) => setIp(e.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                         </section>
 
                         <section className="flex flex-col justify-center">
                             <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">SO</label>
-                            <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                            <input onChange={(e) => setSo(e.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                         </section>
                     </div>
 
                     <section className="flex flex-col justify-center">
                         <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Navegador</label>
-                        <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                        <input onChange={(e) => setNavegador(e.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                     </section>
 
                     <section className="flex flex-col justify-center">
                         <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">Usuario</label>
-                        <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
+                        <input onChange={(e) => setUsuario(e.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5" />
                     </section>
 
                     <button className="bg-blue-500 hover:bg-blue-600 py-2 px-5 rounded-md text-white my-5" type="submit">Save</button>
