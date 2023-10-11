@@ -5,3 +5,6 @@ el login no supe como hacerlo, si inicias sesion te va a llevar a una vista depe
 hice el crud en bitacoras porque no entendia bien su funcionamiento, la vista parametros tampoco entendia bien que habia que hacer ahi.
 en general la app tiene el funcionamiento esperado.
 para realizar los seeders debe hacerse individualmente, ejecutar un comando para cada seeder.
+
+no puedes crear un usuario si no hay una persona.
+no puedes crear un enlace si no hay una pagina.
